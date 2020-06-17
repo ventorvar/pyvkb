@@ -1,0 +1,4 @@
+tox
+twine
+sphinx
+watchdog[watchmedo]
