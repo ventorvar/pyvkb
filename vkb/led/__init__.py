@@ -34,42 +34,39 @@ class LEDConfig:
 
     Setting the LEDs consists of a possible 30 LED configs each of which is a 4 byte structure as follows:
 
-        byte 0:  LED ID
-        bytes 2-4: a 24 bit color config as follows:
+    byte 0:  LED ID
+    bytes 2-4: a 24 bit color config as follows::
 
-            000 001 010 011 100 101 110 111
-            clm lem  b2  g2  r2  b1  g1  r1
+        000 001 010 011 100 101 110 111
+        clm lem  b2  g2  r2  b1  g1  r1
 
-        color mode (clm):
-            0 - color1
-            1 - color2
-            2 - color1/2
-            3 - color2/1
-            4 - color1+2
+    color mode (clm):
+        0 - color1
+        1 - color2
+        2 - color1/2
+        3 - color2/1
+        4 - color1+2
 
-        led mode (lem):
-            0 - off
-            1 - constant
-            2 - slow blink
-            3 - fast blink
-            4 - ultra fast
+    led mode (lem):
+        0 - off
+        1 - constant
+        2 - slow blink
+        3 - fast blink
+        4 - ultra fast
 
-    Colors
-    ------
+    Colors:
+        VKB uses a simple RGB color configuration for all LEDs. Non-rgb LEDs will not light if you set their primary
+        color to 0 in the color config. The LEDs have a very reduced color range due to VKB using 0-7 to determine the
+        brightness of R, G, and B. `LEDConfig` takes in a standard hex color code and converts it into this smaller
+        range, so color reproduction will not be accurate.
 
-    VKB uses a simple RGB color configuration for all LEDs. Non-rgb LEDs will not light if you set their primary color
-    to 0 in the color config. The LEDs have a very reduced color range due to VKB using 0-7 to determine the brightness
-    of R, G, and B. `LEDConfig` takes in a standard hex color code and converts it into this smaller range, so color
-    reproduction will not be accurate.
-
-    Bytes
-    -----
-
-    Convert the LEDConfig to an appropriate binary representation by using `bytes`::
+    Bytes:
+        Convert the LEDConfig to an appropriate binary representation by using `bytes`::
 
         >>> led1 = LEDConfig(led=1, led_mode=LEDMode.CONSTANT)
         >>> bytes(led1)
-        b'\x01\x07p\x04'
+        b'\\x01\\x07p\\x04'
+
 
     :param led: `int` ID of the LED to control
     :param color_mode: `int` color mode, see :class:`ColorMode`
