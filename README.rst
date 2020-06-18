@@ -7,7 +7,7 @@ pyvkb
         :target: https://pypi.python.org/pypi/pyvkb
 
 .. image:: https://img.shields.io/travis/ventorvar/pyvkb.svg
-        :target: https://travis-ci.com/ventorvar/pyvkb
+        :target: https://travis-ci.org/ventorvar/pyvkb
 
 .. image:: https://readthedocs.org/projects/pyvkb/badge/?version=latest
         :target: https://pyvkb.readthedocs.io/en/latest/?badge=latest
