@@ -54,7 +54,7 @@ See `vkb --help` for more information
 
     $ pip install pyvkb
     $ vkb list
-      0:  VKB-Sim Gladiator K  (4d1e55b2-f16f-11cf-88cb-001111000030)
+     0:  VKB-Sim Gladiator K  (4d1e55b2-f16f-11cf-88cb-001111000030)
     $ vkb led show
      0:  VKB-Sim Gladiator K  (4d1e55b2-f16f-11cf-88cb-001111000030)
      ----------------------------------------------------------------------

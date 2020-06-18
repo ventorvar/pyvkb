@@ -10,9 +10,6 @@ LED_CONFIG_COUNT = 12
 LED_REPORT_ID = 0x59
 LED_REPORT_LEN = 129
 LED_SET_OP_CODE = bytes.fromhex("59a50a")
-# TODO: it really looks like the 4 bytes after the op code are random, but using random numbers doesn't work
-#       this... however... always works, so <shrugs>
-LED_SET_UKN_CODE = bytes.fromhex("6e4d349a")
 
 
 class ColorMode(IntEnum):
@@ -229,4 +226,4 @@ def hex_color_to_vkb_color(hex_code: str) -> [int]:
 
 def vkb_color_to_hex_color(vkb_color_code: [int]) -> str:
     """ Takes a VKB color code `[R, G, B]` and converts it into a hex code string"""
-    return f'#{"".join("%02x" % round((min(int(i), 7)/7.0) * 255) for i in vkb_color_code)}'
+    return f'#{"".join("%02x" % round((min(int(i), 7) / 7.0) * 255) for i in vkb_color_code)}'
