@@ -12,8 +12,9 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
-    'hid==1.0.4',
+    'pywinusb==0.4.2;platform_system=="Windows"',
     'bitstruct==8.11.0',
+    'pyglet==1.5.7',
     'python-nubia==0.2b2'
 ]
 

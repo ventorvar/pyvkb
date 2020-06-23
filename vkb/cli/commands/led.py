@@ -4,7 +4,8 @@ import typing
 
 from nubia import command, argument
 
-from vkb.devices import find_all_vkb
+from vkb.devices import vkb_device, find_all_vkb
+from vkb.cli.utils import resolve_devices
 from vkb.led import ColorMode, LEDMode, LEDConfig, LED_CONFIG_COUNT
 from vkb.led.effects import rainbow
 
@@ -26,13 +27,11 @@ class LED:
         aliases=["-l"],
         description="Specify a specific LED to set. Default: All",
     )
-    def show(self, devices: typing.List[int] = (), leds: typing.List[int] = None):
+    def show(self, devices: typing.List[str] = (), leds: typing.List[int] = None):
         """ Show currently set LED information """
-        all_devs = find_all_vkb()
-        devices = devices if devices else range(len(all_devs))
+        vkb_devs = resolve_devices(devices)
 
-        for dev_id in devices:
-            dev = all_devs[dev_id]
+        for dev_id, dev in vkb_devs:
             print(f' {dev_id}: {dev.name} ({dev.guid})\n {"-" * 70}')
             found = False
             for led, config in dev.leds.items():
@@ -63,14 +62,13 @@ class LED:
     )
     def rainbow(
         self,
-        devices: typing.List[int] = (),
+        devices: typing.List[str] = (),
         leds: typing.List[int] = None,
         speed: float = 0.1,
     ):
         print("Press Ctrl+C to stop")
-        all_devs = find_all_vkb()
-        devices = devices if devices else range(len(all_devs))
-        rainbows = [rainbow(all_devs[_], leds or all_devs[_].ALL_LEDS) for _ in devices]
+        vkb_devs = resolve_devices(devices)
+        rainbows = [rainbow(dev, leds or dev.ALL_LEDS) for dev_id, dev in vkb_devs]
         try:
             for _ in zip(*rainbows):
                 time.sleep(speed)
@@ -104,8 +102,8 @@ class LED:
     )
     def set(
         self,
-        devices: typing.List[int] = (),
-        leds: typing.List[int] = [],
+        devices: typing.List[str] = (),
+        leds: typing.List[int] = (),
         color1: str = None,
         color2: str = None,
         color_mode: int = ColorMode.COLOR1,
@@ -133,19 +131,14 @@ class LED:
                 3 - fast blink
                 4 - ultra fast
             """
-        all_devs = find_all_vkb()
-        devices = devices if devices else range(len(all_devs))
+        vkb_devs = resolve_devices(devices)
 
-        if not devices:
-            sys.stderr.write("Invalid device ID")
-            sys.exit(1)
         if len(leds) > LED_CONFIG_COUNT:
             sys.stderr.write(
                 "You can only specify up to 12 led configurations per device"
             )
 
-        for dev_id in devices:
-            dev = all_devs[dev_id]
+        for dev_id, dev in vkb_devs:
             led_configs = [
                 LEDConfig(
                     led=_,

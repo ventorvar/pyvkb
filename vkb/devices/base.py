@@ -1,5 +1,6 @@
 from vkb import led
 
+
 VENDOR_ID = 0x231D
 
 
@@ -8,11 +9,11 @@ class VKBDevice:
     VENDOR_ID = VENDOR_ID
     ALL_LEDS = []
 
-    def __init__(self, device):
+    def __init__(self, device, guid):
         assert self.PRODUCT_ID is not None
         assert self.VENDOR_ID is not None
         self.device = device
-        self.guid = self.device.device_path.split("#")[-1][1:-1]
+        self.guid = guid
         self.name = self.device.product_name
 
     def get_led(self, led_id):

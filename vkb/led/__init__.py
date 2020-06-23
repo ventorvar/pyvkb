@@ -191,8 +191,6 @@ def set_leds(dev: HidDevice, led_configs: [LEDConfig]):
 
     num_configs = len(led_configs)
     led_configs = b"".join(bytes(_) for _ in led_configs)
-    # see note about trying random above
-    # LED_SET_OP_CODE + struct.pack('>4B', *[random.randint(1, 255) for _ in range(4)]) + led_configs
     led_configs = os.urandom(2) + struct.pack(">B", num_configs) + led_configs
     chksum = _led_conf_checksum(num_configs, led_configs)
     cmd = LED_SET_OP_CODE + chksum + led_configs

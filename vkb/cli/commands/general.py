@@ -8,5 +8,10 @@ def list_devices():
     """
     List all VKB USB devices
     """
-    for i, dev in enumerate(find_all_vkb()):
+    devs = find_all_vkb()
+    if not devs:
+        print("No VKB devices found")
+        return
+
+    for i, dev in enumerate(devs):
         print(f" {i:>2}: {dev.name} ({dev.guid})")

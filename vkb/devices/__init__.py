@@ -1,18 +1,36 @@
-import pywinusb.hid as hid
-from .base import VENDOR_ID
+import sys
+import typing
 
-from .gladiatork import GladiatorK
-
-VKB_DEVICES = {0x0132: GladiatorK}
+from .base import VKBDevice
 
 
-def find_all_vkb():
-    devices = []
-    for pid, cls in VKB_DEVICES.items():
-        devices.extend(
-            cls(_)
-            for _ in hid.HidDeviceFilter(
-                vendor_id=VENDOR_ID, product_id=pid
-            ).get_devices()
-        )
-    return sorted(devices, key=lambda d: d.guid)
+if sys.platform.startswith("win"):
+    from vkb.platform.win import find_all_vkb
+else:
+    raise NotImplementedError("This platform is not yet supported by pyvkb")
+
+
+def vkb_device(index_or_guid: typing.Union[int, str]) -> typing.Optional[VKBDevice]:
+    """ Returns a VKBDevice by it's `int` index or `str` GUID.
+
+    :param index_or_guid: Either the `int` 1index of the device in the sorted VKB device list or a str of the GUID
+                          or partial GUID to match. Match is done by startswith()
+    :returns: :class:`VKBDevice` if is a device is matched otherwise None
+    """
+    try:
+        return find_all_vkb()[int(index_or_guid)]
+    except (ValueError, IndexError):
+        return vkb_device_by_guid(index_or_guid)
+
+
+def vkb_device_by_guid(guid: str) -> typing.Optional[VKBDevice]:
+    """ Return the first device that matches the given full, or partial GUID
+
+    :param guid: str of the GUID or partial GUID to match. Match is done by startswith()
+    :returns: :class:`VKBDevice` if is a device is matched otherwise None
+    """
+    guid = guid.lower()
+    for dev in find_all_vkb():
+        if dev.guid.lower().startswith(guid):
+            return dev
+    return None

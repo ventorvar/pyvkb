@@ -52,3 +52,7 @@ class GladiatorK(VKBDevice):
             color_mode=led.ColorMode.COLOR1,
             led_mode=led.LEDMode.CONSTANT,
         )
+
+
+class GladiatorKLH(GladiatorK):
+    PRODUCT_ID = 0x0133
